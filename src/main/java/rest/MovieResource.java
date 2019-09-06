@@ -46,7 +46,7 @@ public class MovieResource {
         if (!FACADE.findByTitle(name).isEmpty()) {
             return GSON.toJson(FACADE.findByTitle(name).get(0));
         } else {
-            return "Something went wrong";
+            return "Something went wrong with the fetching";
         }
     }
 
