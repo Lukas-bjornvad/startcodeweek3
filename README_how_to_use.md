@@ -9,12 +9,12 @@
 - Accept the Authorization of Travis CI. You’ll be redirected to GitHub
 - Click the green Activate button, and select the the new repository to be used with Travis CI
 
-- Create two local databases to be used for local development (replace xxx with a name that makes sense for your project):
-  - `xxx`
-  - `xxx_test`
-- *(We suggest you always follow the naming pattern used above (xxx and xxx_test) for your databases)*
-- Create a REMOTE database on your Droplet with the same name as your dev-database (xxx above)
-- **Important:** Locate the file **.travis.yml** in the root, and change the script `CREATE DATABASE startcode_test;`to use the SAME name as your local test-database (xxx_test) above
+- Create two local databases to be used for local development (replace movie with a name that makes sense for your project):
+  - `movie`
+  - `movie_test`
+- *(We suggest you always follow the naming pattern used above (movie and movie_test) for your databases)*
+- Create a REMOTE database on your Droplet with the same name as your dev-database (movie above)
+- **Important:** Locate the file **.travis.yml** in the root, and change the script `CREATE DATABASE startcode_test;`to use the SAME name as your local test-database (movie_test) above
 - in a terminal (git bash for Windows Users) in the root of the project type: `mvn test`
 - Hopefully the previous step was a success, if not, fix the problem(s)
 

@@ -35,8 +35,8 @@
   `mvn clean test -Dremote.user=script_user -Dremote.password=PW_FOR_script_user tomcat7:deploy`
 
 - If everything was fine the project should be deployed to your droplet, ready to use with the remote database. Test like this:
-  - `URL_FOR_YOUR_DROPLET/rest-jpa-devops-starter/api/xxx`  (This does not use the database)
-  - `URL_FOR_YOUR_DROPLET/rest-jpa-devops-starter/api/xxx/count` (This queries the database)
+  - `URL_FOR_YOUR_DROPLET/rest-jpa-devops-starter/api/movie`  (This does not use the database)
+  - `URL_FOR_YOUR_DROPLET/rest-jpa-devops-starter/api/movie/count` (This queries the database)
 
 ### Add CI-to your project and let Maven deploy, when the project BUILDS and tests are GREEN
 - Login to travis using Github, and select your project on the dashboard
