@@ -18,30 +18,36 @@ import javax.ws.rs.core.MediaType;
 //Todo Remove or change relevant parts before ACTUAL use
 @Path("movie")
 public class MovieResource {
+
     //MovieFacade movs = new MovieFacade();
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(
-                "pu",
-                "jdbc:mysql://localhost:3307/startcode",
-                "dev",
-                "ax2",
-                EMF_Creator.Strategy.DROP_AND_CREATE);
-    private static final MovieFacade FACADE =  MovieFacade.getFacadeExample(EMF);
+            "pu",
+            "jdbc:mysql://localhost:3307/startcode",
+            "dev",
+            "ax2",
+            EMF_Creator.Strategy.DROP_AND_CREATE);
+    private static final MovieFacade FACADE = MovieFacade.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-   
-    public MovieResource(){
-      //  FACADE.populate();
-  }
-            
+
+    public MovieResource() {
+        //  FACADE.populate();
+    }
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
+
     @Path("/title/{title}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getByTitle(@PathParam("title") String name) {
-       return GSON.toJson(FACADE.findByTitle(name).get(0));
+        if (!FACADE.findByTitle(name).isEmpty()) {
+            return GSON.toJson(FACADE.findByTitle(name).get(0));
+        } else {
+            return "Something went wrong";
+        }
     }
 
 //    @POST
@@ -53,19 +59,21 @@ public class MovieResource {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllEmployeesList() {
-    return GSON.toJson(FACADE.allMovies());
+        return GSON.toJson(FACADE.allMovies());
     }
-       @GET
+
+    @GET
     @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
     public int getCount() {
-    return FACADE.count();
+        return FACADE.count();
     }
+
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getById(@PathParam("id") long id) {
-       Movie mov=FACADE.findByID(id);
-       return GSON.toJson(mov);
+        Movie mov = FACADE.findByID(id);
+        return GSON.toJson(mov);
     }
 }
