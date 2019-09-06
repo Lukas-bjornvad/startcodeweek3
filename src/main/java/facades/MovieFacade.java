@@ -41,14 +41,15 @@ public class MovieFacade {
     }
     
     //TODO Remove/Change this before use
-    public long getRenameMeCount(){
-        EntityManager em = emf.createEntityManager();
-        try{
-            long renameMeCount = (long)em.createQuery("SELECT COUNT(r) FROM RenameMe r").getSingleResult();
-            return renameMeCount;
-        }finally{  
-            em.close();
-        }}
+//    public long count(){
+//        EntityManager em = emf.createEntityManager();
+//        try{
+//            long count = (long)em.createQuery("SELECT COUNT(r) FROM RenameMe r").getSingleResult();
+//            return count;
+//        }finally{  
+//            em.close();
+//        }}
+    
     public List<Movie> findByTitle(String name){
     EntityManager em = emf.createEntityManager();
         try{

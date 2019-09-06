@@ -17,7 +17,6 @@ import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
 //@Disabled
- @Disabled
 public class MovieFacadeTest {
 
     private static EntityManagerFactory emf;
@@ -56,21 +55,21 @@ public class MovieFacadeTest {
 
     // Setup the DataBase in a known state BEFORE EACH TEST
     //TODO -- Make sure to change the script below to use YOUR OWN entity class
+       private final  Movie l =new Movie(1999, "In the Deep", new String[]{"Cameron","Karry","Davis"});
     @BeforeEach
-
     public void setUp() {
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            em.createNamedQuery("RenameMe.deleteAllRows").executeUpdate();
-//            em.persist(new Movie("Some txt", "More text"));
-//            em.persist(new Movie("aaa", "bbb"));
-//
-//            em.getTransaction().commit();
-//        } finally {
-//            em.close();
-//        }
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
+            em.persist(l);
+            em.persist(new Movie(1998, "Down under", new String[]{"Kaden","Barry","Lero"}));
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+      }
     }
+    
 
     @AfterEach
     public void tearDown() {
@@ -79,9 +78,17 @@ public class MovieFacadeTest {
 
     // TODO: Delete or change this method 
     @Test
-    @Disabled
-    public void testAFacadeMethod() {
-        assertEquals(2, facade.getRenameMeCount(), "Expects two rows in the database");
+    public void testCountFacadeMethod() {
+        assertEquals(2, facade.count(), "Expects two rows in the database");
     }
-
+    @Test
+    public void testGetByNameFacadeMethod() {
+        Movie expected = new Movie(1998, "Down under", new String[]{"Kaden","Barry","Lero"});
+        assertEquals(expected.getActors()[0], facade.findByTitle("Down under").get(0).getActors()[0]);
+    }
+    @Test
+    public void testGetByIdFacadeMethod() {
+        Movie expected = new Movie(1999, "In the Deep", new String[]{"Cameron","Karry","Davis"});
+        assertEquals(expected.getName(), facade.findByID(l.getId()).getName());
+    }
 }

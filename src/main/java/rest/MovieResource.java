@@ -59,14 +59,15 @@ public class MovieResource {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllEmployeesList() {
-        return GSON.toJson(FACADE.allMovies());
+        String out = GSON.toJson(FACADE.allMovies());
+        return out ;
     }
 
     @GET
     @Path("/count")
     @Produces(MediaType.APPLICATION_JSON)
-    public int getCount() {
-        return FACADE.count();
+    public String getCount() {
+        return "{\"count\":"+FACADE.count()+"}";
     }
 
     @Path("/{id}")

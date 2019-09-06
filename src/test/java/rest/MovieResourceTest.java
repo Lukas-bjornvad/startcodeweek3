@@ -14,17 +14,20 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import rest.ApplicationConfig;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
-public class RenameMeResourceTest {
+
+public class MovieResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
@@ -65,21 +68,17 @@ public class RenameMeResourceTest {
     
     // Setup the DataBase (used by the test-server and this test) in a known state BEFORE EACH TEST
     //TODO -- Make sure to change the script below to use YOUR OWN entity class
+                
+
+       private final  Movie l =new Movie(1999, "In the Deep", new String[]{"Cameron","Karry","Davis"});
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("RenameMe.deleteAllRows").executeUpdate();
-            String[] lor = new String[3];
-    lor[0]="Cameron";
-     lor[1]="Karry";
-    lor[2]="Davis";
-            em.persist(new Movie(1999, "In the deep", lor));
-             lor[0]="Kaden";
-     lor[1]="Barry";
-    lor[2]="Lero";
-            em.persist(new Movie(1998, "Down under", lor));
+            em.createNamedQuery("Movie.deleteAllRows").executeUpdate();
+            em.persist(l);
+            em.persist(new Movie(1998, "Down under", new String[]{"Kaden","Barry","Lero"}));
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -91,18 +90,38 @@ public class RenameMeResourceTest {
         System.out.println("Testing is server UP");
         given().when().get("/movie").then().statusCode(200);
     }
-   
-    //This test assumes the database contains two rows
-    @Test
-    public void testDummyMsg() throws Exception {
+           @Test
+    public void testAll() throws Exception {
         given()
         .contentType("application/json")
-        .get("/movie/").then()
+        .get("/movie/all").then()
         .assertThat()
         .statusCode(HttpStatus.OK_200.getStatusCode())
-        .body("msg", equalTo("Hello World"));   
+        .body("year", hasItem(1998))
+        .body("year", hasItem(1999))
+        .body("name", hasItem("In the Deep"))
+        .body("name", hasItem("Down under"));
     }
-    
+          @Test
+    public void testGetById() throws Exception {
+        given()
+        .contentType("application/json")
+        .get("/movie/"+l.getId()).then()
+        .assertThat()
+        .statusCode(HttpStatus.OK_200.getStatusCode())
+        .body("year", is(1999))
+        .body("name", is("In the Deep"));
+    }
+           @Test
+    public void testGetByTitle() throws Exception {
+        given()
+        .contentType("application/json")
+        .get("/movie/title/Down under").then()
+        .assertThat()
+        .statusCode(HttpStatus.OK_200.getStatusCode())
+        .body("year", is(1998))
+        .body("name", is("Down under"));
+    }
     @Test
     public void testCount() throws Exception {
         given()
@@ -112,4 +131,7 @@ public class RenameMeResourceTest {
         .statusCode(HttpStatus.OK_200.getStatusCode())
         .body("count", equalTo(2));   
     }
+
+    
+ 
 }
