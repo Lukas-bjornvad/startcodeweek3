@@ -8,7 +8,7 @@
 document.getElementById("btn").onclick = function (e) {
     e.preventDefault();
     var inp = document.getElementById("in").value;
-    var url = document.location.origin+"/jpareststarter/api/movie/" + inp;
+    var url = document.location.href+"api/movie/" + inp;
     fetch(url)
             .then(res => res.json()) //in flow1, just do it
             .then(data => {
@@ -23,7 +23,7 @@ document.getElementById("btn").onclick = function (e) {
 document.getElementById("btn1").onclick = function (e) {
     e.preventDefault();
     var inp = document.getElementById("in1").value;
-    var url = document.location.origin+"/jpareststarter/api/movie/title/" + inp;
+    var url = document.location.href+"api/movie/title/" + inp;
     fetch(url)
             .then(res => res.json()) //in flow1, just do it
             .then(data => {
@@ -38,7 +38,8 @@ document.getElementById("btn1").onclick = function (e) {
 
 document.getElementById("btn2").onclick = function (e) {
     e.preventDefault();
-    var url = document.location.origin+"/jpareststarter/api/movie/all";
+    var url = document.location.href+"api/movie/all";
+
     fetch(url)
             .then(res => res.json()) //in flow1, just do it
             .then(data => {
